@@ -53,5 +53,23 @@ export async function logout() {
         await account.deleteSession('current')
     } catch(error) {
         console.log(error)
+        return false;
+    }
+}
+
+export async function getUser() {
+    try {
+        const response = await account.get()
+        if(response.$id) {
+            const userAvatar = avatar.getInitials(response.name)
+            return {
+                ... response,
+                avatar: userAvatar.toString(),
+            }
+        }
+        return response
+    } catch(error) {
+        console.error(error);
+        return null;
     }
 }
